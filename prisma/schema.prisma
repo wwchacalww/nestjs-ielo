@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(uuid())
+  name         String
+  email        String         @unique
+  password     String
+  role         String
+  Professional Professional[]
+
+  @@map("users")
+}
+
+model Professional {
+  id          String        @id @default(uuid())
+  name        String
+  birthDate   DateTime      @map("birth_date")
+  email       String
+  cpf         String        @unique
+  fone        String
+  address     String
+  register    String
+  specialty   String
+  description String
+  userId      String        @map("user_id")
+  user        User          @relation(fields: [userId], references: [id])
+  Appointment Appointment[]
+  Progress    Progress[]
+  Report      Report[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime?     @updatedAt @map("updated_at")
+
+  @@map("professionals")
+}
+
+model Patient {
+  id             String        @id @default(uuid())
+  name           String
+  birthDate      DateTime      @map("birth_date")
+  email          String
+  cpf            String        @unique
+  fone           String
+  address        String
+  payment        String
+  responsible    String
+  parent         String
+  cpfResponsible String
+  Appointment    Appointment[]
+  Progress       Progress[]
+  Report         Report[]
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime?     @updatedAt @map("updated_at")
+
+  @@map("patients")
+}
+
+model Appointment {
+  id             Int          @id @default(autoincrement())
+  specialty      String
+  appointment    DateTime
+  local          String
+  status         String
+  payment        String
+  value          Decimal
+  professionalId String       @map("professional_id")
+  professional   Professional @relation(fields: [professionalId], references: [id])
+  patientId      String       @map("patient_id")
+  patient        Patient      @relation(fields: [patientId], references: [id])
+  Progress       Progress[]
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime?    @updatedAt @map("updated_at")
+
+  @@map("appointments")
+}
+
+model Progress {
+  id             String       @id @default(uuid())
+  progress       String
+  status         String
+  appointmentId  Int          @map("appointment_id")
+  appointment    Appointment  @relation(fields: [appointmentId], references: [id])
+  patientId      String       @map("patient_id")
+  patient        Patient      @relation(fields: [patientId], references: [id])
+  professionalId String       @map("professional_id")
+  profissional   Professional @relation(fields: [professionalId], references: [id])
+  supervisorId   String       @map("supervisor_id")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime?    @updatedAt @map("updated_at")
+
+  @@map("progress")
+}
+
+model Report {
+  id             String       @id @default(uuid())
+  report         String
+  patientId      String       @map("patient_id")
+  patient        Patient      @relation(fields: [patientId], references: [id])
+  professionalId String       @map("professional_id")
+  profissional   Professional @relation(fields: [professionalId], references: [id])
+  supervisorId   String       @map("supervisor_id")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime?    @updatedAt @map("updated_at")
+
+  @@map("reports")
+}
