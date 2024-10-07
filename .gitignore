@@ -57,3 +57,10 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Banco de Dados PG
 data
+
+# RS256 keys
+jwtRS256.key
+jwtRS256.key.pub
+
+# Rest Client
+client.http
