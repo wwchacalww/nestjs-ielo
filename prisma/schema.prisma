@@ -13,6 +13,7 @@ model User {
   email        String         @unique
   password     String
   role         String
+  status       Boolean        @default(true)
   Professional Professional[]
 
   @@map("users")
@@ -22,13 +23,14 @@ model Professional {
   id          String        @id @default(uuid())
   name        String
   birthDate   DateTime      @map("birth_date")
-  email       String
+  email       String        @unique
   cpf         String        @unique
   fone        String
   address     String
   register    String
   specialty   String
   description String
+  status      Boolean       @default(true)
   userId      String        @map("user_id")
   user        User          @relation(fields: [userId], references: [id])
   Appointment Appointment[]
@@ -52,6 +54,7 @@ model Patient {
   responsible    String
   parent         String
   cpfResponsible String
+  status         String        @default("em tratamento")
   Appointment    Appointment[]
   Progress       Progress[]
   Report         Report[]

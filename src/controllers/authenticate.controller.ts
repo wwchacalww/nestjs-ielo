@@ -30,10 +30,12 @@ export class AuthenticateController {
   async handle(@Body() body: AuthenticateBodySchema) {
     const { email, password } = body
     const user = await this.prisma.user.findUnique({
-      where: { email },
+      where: {
+        email,
+      },
     })
 
-    if (!user) {
+    if (!user || !user.status) {
       throw new UnauthorizedException('Email ou senha inválido.')
     }
 
