@@ -15,8 +15,13 @@
   - [X] Criar controller de Autheticação
   - [X] Protegendo rotas com guard
   - [X] Criando decorators de autenticação
+
+  ### Profissionais
   - [X] Controller de registro de usuário e profissionais
   - [X] Controller listagem de profissionais com paginação
   - [X] Configurar os testes
-  - [ ] Controller de registro de pacientes
-  - [ ] Controller listagem de pacientes com paginação
+
+  ### Pacientes
+  - [X] Controller de registro de pacientes
+  - [X] Controller listagem de pacientes com paginação
+  - [X] Configurar os testes
