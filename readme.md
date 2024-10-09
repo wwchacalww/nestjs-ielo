@@ -17,6 +17,6 @@
   - [X] Criando decorators de autenticação
   - [X] Controller de registro de usuário e profissionais
   - [X] Controller listagem de profissionais com paginação
-  - [ ] Configurar os testes
+  - [X] Configurar os testes
   - [ ] Controller de registro de pacientes
   - [ ] Controller listagem de pacientes com paginação
