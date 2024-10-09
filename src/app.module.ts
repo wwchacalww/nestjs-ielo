@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module'
 import { AuthenticateController } from './controllers/authenticate.controller'
 import { CreateProfessionalController } from './controllers/create-professional.controller'
 import { ListProfessionalsController } from './controllers/list-professionals.controller'
+import { CreatePatientController } from './controllers/patients/create-patients.controller'
+import { ListPatientsController } from './controllers/patients/list-patients.controller'
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { ListProfessionalsController } from './controllers/list-professionals.co
     AuthenticateController,
     CreateProfessionalController,
     ListProfessionalsController,
+    CreatePatientController,
+    ListPatientsController,
   ],
   providers: [PrismaService],
 })

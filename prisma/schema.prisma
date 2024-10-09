@@ -46,14 +46,14 @@ model Patient {
   id             String        @id @default(uuid())
   name           String
   birthDate      DateTime      @map("birth_date")
-  email          String
-  cpf            String        @unique
+  email          String?
+  cpf            String?       @unique
   fone           String
   address        String
   payment        String
   responsible    String
   parent         String
-  cpfResponsible String
+  cpfResponsible String?
   status         String        @default("em tratamento")
   Appointment    Appointment[]
   Progress       Progress[]
