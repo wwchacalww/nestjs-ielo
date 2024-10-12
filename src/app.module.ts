@@ -5,10 +5,12 @@ import { ConfigModule } from '@nestjs/config'
 import { envSchema } from 'env'
 import { AuthModule } from './auth/auth.module'
 import { AuthenticateController } from './controllers/authenticate.controller'
-import { CreateProfessionalController } from './controllers/create-professional.controller'
-import { ListProfessionalsController } from './controllers/list-professionals.controller'
+import { CreateProfessionalController } from './controllers/professionals/create-professional.controller'
+import { ListProfessionalsController } from './controllers/professionals/list-professionals.controller'
 import { CreatePatientController } from './controllers/patients/create-patients.controller'
 import { ListPatientsController } from './controllers/patients/list-patients.controller'
+import { AppointmentController } from './controllers/appointments/appointment.controller'
+import { ListAppointmentsController } from './controllers/appointments/list-appointments.controller'
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { ListPatientsController } from './controllers/patients/list-patients.con
     ListProfessionalsController,
     CreatePatientController,
     ListPatientsController,
+    AppointmentController,
+    ListAppointmentsController,
   ],
   providers: [PrismaService],
 })
