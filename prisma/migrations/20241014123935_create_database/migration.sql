@@ -5,6 +5,7 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" TEXT NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -21,6 +22,7 @@ CREATE TABLE "professionals" (
     "register" TEXT NOT NULL,
     "specialty" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT true,
     "user_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),
@@ -33,14 +35,15 @@ CREATE TABLE "patients" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "birth_date" TIMESTAMP(3) NOT NULL,
-    "email" TEXT NOT NULL,
-    "cpf" TEXT NOT NULL,
+    "email" TEXT,
+    "cpf" TEXT,
     "fone" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "payment" TEXT NOT NULL,
     "responsible" TEXT NOT NULL,
     "parent" TEXT NOT NULL,
-    "cpfResponsible" TEXT NOT NULL,
+    "cpfResponsible" TEXT,
+    "status" TEXT NOT NULL DEFAULT 'em tratamento',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),
 
@@ -51,7 +54,8 @@ CREATE TABLE "patients" (
 CREATE TABLE "appointments" (
     "id" SERIAL NOT NULL,
     "specialty" TEXT NOT NULL,
-    "appointment" TIMESTAMP(3) NOT NULL,
+    "start" TIMESTAMP(3) NOT NULL,
+    "end" TIMESTAMP(3) NOT NULL,
     "local" TEXT NOT NULL,
     "status" TEXT NOT NULL,
     "payment" TEXT NOT NULL,
@@ -94,6 +98,9 @@ CREATE TABLE "reports" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "professionals_email_key" ON "professionals"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "professionals_cpf_key" ON "professionals"("cpf");
