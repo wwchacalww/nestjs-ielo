@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { getDayOfYear, getWeek, setWeek } from 'date-fns'
+import { getDayOfYear, setDayOfYear, setWeek } from 'date-fns'
 import { z } from 'zod'
 
 const listAppointmentsQuerySchema = z.object({
@@ -41,6 +41,11 @@ export class ListAppointmentsController {
     }
     const { range, patId, proId, value } = query
     const today = new Date()
+    today.setUTCHours(3)
+    today.setUTCMinutes(0)
+    today.setUTCSeconds(0)
+    const dayOfYear = getDayOfYear(new Date())
+
     if (user.role === 'profissional') {
       if (range === 'mm') {
         const mm = value === 0 ? today.getMonth() : value - 1
@@ -48,7 +53,7 @@ export class ListAppointmentsController {
         const lte = new Date(
           Date.UTC(today.getFullYear(), mm + 1, 0, 23, 59, 0),
         )
-        const appointments = await this.prisma.professional.findMany({
+        const appointments = await this.prisma.professional.findFirst({
           where: {
             userId: user.sub,
           },
@@ -60,39 +65,239 @@ export class ListAppointmentsController {
                   lte,
                 },
               },
+              orderBy: {
+                start: 'asc',
+              },
+              include: {
+                patient: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
             },
           },
         })
         return appointments
       } else if (range === 'wk') {
-        const firthDay = new Date('2024-01-01')
-        const dayFirth = getDayOfYear(firthDay)
-        const today = getDayOfYear(new Date())
-        const firthWeek = getWeek(firthDay)
-        const secWeek = setWeek(firthDay, 41)
-        console.log(firthDay)
-        console.log(dayFirth)
-        console.log(today)
-        console.log('Week: ', firthWeek)
-        console.log(secWeek)
+        const year = new Date().getFullYear().toString()
+        const firthDay = new Date(year + '-01-01')
+        const wkNumber = value === 0 ? Math.ceil(dayOfYear / 7) : value
+        const startWeek = setWeek(firthDay, wkNumber)
+        const endWeek = new Date(
+          startWeek.getFullYear(),
+          startWeek.getMonth(),
+          startWeek.getDate() + 7,
+          20,
+          59,
+          0,
+        )
+        const appointments = await this.prisma.professional.findFirst({
+          where: {
+            userId: user.sub,
+          },
+          include: {
+            Appointment: {
+              where: {
+                start: {
+                  gte: startWeek,
+                  lte: endWeek,
+                },
+              },
+              orderBy: {
+                start: 'asc',
+              },
+              include: {
+                patient: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+        return appointments
+      } else if (range === 'patient' && patId) {
+        const appointments = await this.prisma.professional.findFirst({
+          where: {
+            userId: user.sub,
+          },
+          include: {
+            Appointment: {
+              where: {
+                patientId: patId,
+              },
+              orderBy: {
+                start: 'asc',
+              },
+              include: {
+                patient: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+        return appointments
       }
-      const appointments = await this.prisma.professional.findMany({
+      const appointments = await this.prisma.professional.findFirst({
         where: {
           userId: user.sub,
         },
         include: {
-          Appointment: true,
+          Appointment: {
+            orderBy: {
+              start: 'asc',
+            },
+            include: {
+              patient: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
         },
       })
       return appointments
     }
 
-    return {
-      user,
-      value,
-      range,
-      patId,
-      proId,
+    if (user.role === 'atendente' || user.role === 'admin') {
+      if (range === 'mm') {
+        const mm = value === 0 ? today.getMonth() : value - 1
+        const gte = new Date(Date.UTC(today.getFullYear(), mm, 1, 5, 0, 0))
+        const lte = new Date(
+          Date.UTC(today.getFullYear(), mm + 1, 0, 23, 59, 0),
+        )
+        const appointments = await this.prisma.appointment.findMany({
+          where: {
+            start: {
+              lte,
+              gte,
+            },
+          },
+          orderBy: {
+            start: 'asc',
+          },
+          include: {
+            professional: {
+              select: {
+                name: true,
+              },
+            },
+            patient: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        })
+
+        return appointments
+      } else if (range === 'wk') {
+        const year = new Date().getFullYear().toString()
+        const firthDay = new Date(year + '-01-01')
+        const wkNumber = value === 0 ? Math.ceil(dayOfYear / 7) : value
+        const startWeek = setWeek(firthDay, wkNumber)
+        const endWeek = new Date(
+          startWeek.getFullYear(),
+          startWeek.getMonth(),
+          startWeek.getDate() + 7,
+          20,
+          59,
+          0,
+        )
+
+        const appointments = await this.prisma.appointment.findMany({
+          where: {
+            start: {
+              lte: endWeek,
+              gte: startWeek,
+            },
+          },
+          orderBy: {
+            start: 'asc',
+          },
+          include: {
+            professional: {
+              select: {
+                name: true,
+              },
+            },
+            patient: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        })
+
+        return appointments
+      } else if (range === 'dd') {
+        const dof = value === 0 ? dayOfYear : value
+        const gte = setDayOfYear(today, dof)
+        const lte = setDayOfYear(today, dof)
+        lte.setUTCHours(23)
+        lte.setUTCMinutes(59)
+        lte.setUTCSeconds(59)
+        const appointments = await this.prisma.appointment.findMany({
+          where: {
+            start: {
+              gte,
+              lte,
+            },
+          },
+        })
+
+        return appointments
+      } else if (range === 'profissional' && proId) {
+        const appointments = await this.prisma.professional.findUnique({
+          where: {
+            id: proId,
+          },
+          include: {
+            Appointment: {
+              orderBy: {
+                start: 'asc',
+              },
+              include: {
+                patient: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+
+        return appointments
+      } else if (range === 'patient' && patId) {
+        const appointments = await this.prisma.patient.findUnique({
+          where: {
+            id: patId,
+          },
+          include: {
+            Appointment: {
+              orderBy: {
+                start: 'asc',
+              },
+              include: {
+                professional: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+
+        return appointments
+      }
     }
   }
 }

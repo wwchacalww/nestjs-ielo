@@ -28,9 +28,11 @@
 
   ### Agendamentos
   - [X] Controller de agendamento de pacientes
-  - [ ] Controller listagem de todos agendamentos
-  - [ ] Controller listagem de agendamentos do dia
-  - [ ] Controller listagem de agendamentos da Semana
-  - [ ] Controller listagem de agendamentos não atendidos do Profissional 
-  - [ ] Controller listagem de todos agendamentos do Profissional 
-  - [ ] Configurar os testes
+  - [X] Controller listagem de todos agendamentos
+  - [X] Controller listagem de agendamentos do dia
+  - [X] Controller listagem de agendamentos da Semana
+  - [X] Controller listagem de todos agendamentos do Profissional
+  - [X] Trocar a data do agendamento 
+  - [X] Atualizar o status do agendamento
+  - [X] Apagar o registro de uma agendamento
+  - [X] Configurar os testes

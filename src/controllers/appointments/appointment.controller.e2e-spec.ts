@@ -134,7 +134,6 @@ describe('Appointment (E2E)', () => {
         professionalId: professional.id,
         patientId: crianca.id,
       })
-    console.log(resProfessionalSameTime.body)
     expect(resProfessionalSameTime.statusCode).toBe(409)
     expect(resProfessionalSameTime.body.message).toEqual(
       'Profissional já tem atendimento agendado para este horário!',

@@ -11,6 +11,9 @@ import { CreatePatientController } from './controllers/patients/create-patients.
 import { ListPatientsController } from './controllers/patients/list-patients.controller'
 import { AppointmentController } from './controllers/appointments/appointment.controller'
 import { ListAppointmentsController } from './controllers/appointments/list-appointments.controller'
+import { AlterAppointmentController } from './controllers/appointments/alter-appointment.controller'
+import { ChangeStatusAppointmentController } from './controllers/appointments/change-status-appointment.controller'
+import { DeleteAppointmentController } from './controllers/appointments/delete-appointment.controller'
 
 @Module({
   imports: [
@@ -29,6 +32,9 @@ import { ListAppointmentsController } from './controllers/appointments/list-appo
     ListPatientsController,
     AppointmentController,
     ListAppointmentsController,
+    AlterAppointmentController,
+    ChangeStatusAppointmentController,
+    DeleteAppointmentController,
   ],
   providers: [PrismaService],
 })
