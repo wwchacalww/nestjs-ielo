@@ -67,7 +67,8 @@ model Patient {
 model Appointment {
   id             Int          @id @default(autoincrement())
   specialty      String
-  appointment    DateTime
+  start          DateTime
+  end            DateTime
   local          String
   status         String
   payment        String

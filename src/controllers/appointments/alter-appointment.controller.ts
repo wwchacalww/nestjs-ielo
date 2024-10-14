@@ -7,56 +7,56 @@ import {
   ConflictException,
   Controller,
   HttpCode,
-  Post,
+  NotFoundException,
+  Put,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { z } from 'zod'
 
-const appointmentBodySchema = z.object({
-  specialty: z.string().min(3),
+const alterAppointmentBodySchema = z.object({
+  id: z.number().min(1),
   start: z.string().datetime(),
   end: z.string().datetime(),
-  local: z.string(),
-  status: z.string().optional().default('agendado'),
-  payment: z.string().optional().default('aguardando pagamento'),
-  value: z.number(),
-  professionalId: z.string().uuid(),
-  patientId: z.string().uuid(),
 })
 
-const bodyValidationPipe = new ZodValidationPipe(appointmentBodySchema)
-type AppointmentBodySchema = z.infer<typeof appointmentBodySchema>
+const bodyValidationPipe = new ZodValidationPipe(alterAppointmentBodySchema)
+type AlterAppointmentBodySchema = z.infer<typeof alterAppointmentBodySchema>
 
-@Controller('/appointments')
+@Controller('/appointments/alter')
 @UseGuards(AuthGuard('jwt'))
-export class AppointmentController {
+export class AlterAppointmentController {
   constructor(private prisma: PrismaService) {}
 
-  @Post()
+  @Put()
   @HttpCode(201)
   async handle(
-    @Body(bodyValidationPipe) body: AppointmentBodySchema,
+    @Body(bodyValidationPipe) body: AlterAppointmentBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
     const can = ['admin', 'atendente', 'profissional']
     if (!can.includes(user.role)) {
       throw new UnauthorizedException(
-        'Você não permissão para agendar um horário!',
+        'Você não permissão para alterar o horário!',
       )
     }
 
-    const {
-      start,
-      end,
-      local,
-      patientId,
-      payment,
-      professionalId,
-      specialty,
-      value,
-    } = body
+    const { start, end, id } = body
+    const appointment = await this.prisma.appointment.findFirst({
+      where: { id },
+      include: {
+        professional: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    })
+    if (!appointment) {
+      throw new NotFoundException('Agendamento não encontrado!')
+    }
+
     const startTS = new Date(start)
     const endTS = new Date(end)
     if (startTS.getTime() >= endTS.getTime()) {
@@ -66,7 +66,7 @@ export class AppointmentController {
     const appointmentPatientInSameTime =
       await this.prisma.appointment.findFirst({
         where: {
-          patientId,
+          patientId: appointment.patientId,
           OR: [
             { start: { lte: endTS }, end: { gte: startTS } },
             { start: { gte: startTS }, end: { lte: endTS } },
@@ -81,7 +81,7 @@ export class AppointmentController {
     const appointmentProfessionalInSameTime =
       await this.prisma.appointment.findFirst({
         where: {
-          professionalId,
+          professionalId: appointment.professionalId,
           OR: [
             { start: { lte: endTS }, end: { gte: startTS } },
             { start: { gte: startTS }, end: { lte: endTS } },
@@ -94,17 +94,18 @@ export class AppointmentController {
       )
     }
 
-    await this.prisma.appointment.create({
+    if (user.role === 'profissional') {
+      if (user.sub !== appointment.professional.userId) {
+        throw new UnauthorizedException(
+          'Você só pode alterar os horário do próprio atendimentos.',
+        )
+      }
+    }
+    await this.prisma.appointment.update({
+      where: { id },
       data: {
         start,
         end,
-        local,
-        payment,
-        specialty,
-        professionalId,
-        patientId,
-        status: 'agendado',
-        value,
       },
     })
   }

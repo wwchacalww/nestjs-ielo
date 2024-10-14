@@ -25,3 +25,14 @@
   - [X] Controller de registro de pacientes
   - [X] Controller listagem de pacientes com paginação
   - [X] Configurar os testes
+
+  ### Agendamentos
+  - [X] Controller de agendamento de pacientes
+  - [X] Controller listagem de todos agendamentos
+  - [X] Controller listagem de agendamentos do dia
+  - [X] Controller listagem de agendamentos da Semana
+  - [X] Controller listagem de todos agendamentos do Profissional
+  - [X] Trocar a data do agendamento 
+  - [X] Atualizar o status do agendamento
+  - [X] Apagar o registro de uma agendamento
+  - [X] Configurar os testes
