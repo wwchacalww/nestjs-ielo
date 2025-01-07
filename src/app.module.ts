@@ -14,6 +14,8 @@ import { ListAppointmentsController } from './controllers/appointments/list-appo
 import { AlterAppointmentController } from './controllers/appointments/alter-appointment.controller'
 import { ChangeStatusAppointmentController } from './controllers/appointments/change-status-appointment.controller'
 import { DeleteAppointmentController } from './controllers/appointments/delete-appointment.controller'
+import { TesteController } from './controllers/sessions/teste.controller'
+import { GetProfileController } from './controllers/sessions/get-profile.controller'
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import { DeleteAppointmentController } from './controllers/appointments/delete-a
   ],
   controllers: [
     CreateAccountController,
+    GetProfileController,
     AuthenticateController,
     CreateProfessionalController,
     ListProfessionalsController,
@@ -35,6 +38,7 @@ import { DeleteAppointmentController } from './controllers/appointments/delete-a
     AlterAppointmentController,
     ChangeStatusAppointmentController,
     DeleteAppointmentController,
+    TesteController,
   ],
   providers: [PrismaService],
 })

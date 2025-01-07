@@ -16,6 +16,11 @@
   - [X] Protegendo rotas com guard
   - [X] Criando decorators de autenticação
 
+  ### Perfil
+  - [X] Controller de captura do perfil
+  - [ ] Trocar senha do usuário
+  - [ ] Alterar status do usuário
+
   ### Profissionais
   - [X] Controller de registro de usuário e profissionais
   - [X] Controller listagem de profissionais com paginação
