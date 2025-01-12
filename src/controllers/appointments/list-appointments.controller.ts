@@ -14,6 +14,12 @@ import { getDayOfYear, setDayOfYear, setWeek } from 'date-fns'
 import { z } from 'zod'
 
 const listAppointmentsQuerySchema = z.object({
+  page: z
+    .string()
+    .optional()
+    .default('1')
+    .transform(Number)
+    .pipe(z.number().min(1)),
   range: z.string().optional().default('mm'),
   value: z.string().optional().default('0').transform(Number),
   proId: z.string().uuid().optional(),
@@ -39,7 +45,8 @@ export class ListAppointmentsController {
         'Você não tem acesso a agenda de horários!',
       )
     }
-    const { range, patId, proId, value } = query
+    const { range, patId, proId, value, page } = query
+    const perPage = 20
     const today = new Date()
     today.setUTCHours(3)
     today.setUTCMinutes(0)
@@ -172,31 +179,43 @@ export class ListAppointmentsController {
         const lte = new Date(
           Date.UTC(today.getFullYear(), mm + 1, 0, 23, 59, 0),
         )
-        const appointments = await this.prisma.appointment.findMany({
-          where: {
-            start: {
-              lte,
-              gte,
-            },
-          },
-          orderBy: {
-            start: 'asc',
-          },
-          include: {
-            professional: {
-              select: {
-                name: true,
+        const [totalCount, appointments] = await this.prisma.$transaction([
+          this.prisma.appointment.count(),
+          this.prisma.appointment.findMany({
+            where: {
+              start: {
+                lte,
+                gte,
               },
             },
-            patient: {
-              select: {
-                name: true,
+            take: perPage,
+            skip: (page - 1) * perPage,
+            orderBy: {
+              start: 'asc',
+            },
+            include: {
+              professional: {
+                select: {
+                  name: true,
+                },
+              },
+              patient: {
+                select: {
+                  name: true,
+                },
               },
             },
+          }),
+        ])
+        const result = {
+          appointments,
+          meta: {
+            page,
+            perPage,
+            totalCount,
           },
-        })
-
-        return appointments
+        }
+        return result
       } else if (range === 'wk') {
         const year = new Date().getFullYear().toString()
         const firthDay = new Date(year + '-01-01')
@@ -211,31 +230,44 @@ export class ListAppointmentsController {
           0,
         )
 
-        const appointments = await this.prisma.appointment.findMany({
-          where: {
-            start: {
-              lte: endWeek,
-              gte: startWeek,
-            },
-          },
-          orderBy: {
-            start: 'asc',
-          },
-          include: {
-            professional: {
-              select: {
-                name: true,
+        const [totalCount, appointments] = await this.prisma.$transaction([
+          this.prisma.appointment.count(),
+          this.prisma.appointment.findMany({
+            where: {
+              start: {
+                lte: endWeek,
+                gte: startWeek,
               },
             },
-            patient: {
-              select: {
-                name: true,
+            take: perPage,
+            skip: (page - 1) * perPage,
+            orderBy: {
+              start: 'asc',
+            },
+            include: {
+              professional: {
+                select: {
+                  name: true,
+                },
+              },
+              patient: {
+                select: {
+                  name: true,
+                },
               },
             },
-          },
-        })
+          }),
+        ])
 
-        return appointments
+        const result = {
+          appointments,
+          meta: {
+            page,
+            perPage,
+            totalCount,
+          },
+        }
+        return result
       } else if (range === 'dd') {
         const dof = value === 0 ? dayOfYear : value
         const gte = setDayOfYear(today, dof)
@@ -263,6 +295,8 @@ export class ListAppointmentsController {
               orderBy: {
                 start: 'asc',
               },
+              take: perPage,
+              skip: (page - 1) * perPage,
               include: {
                 patient: {
                   select: {

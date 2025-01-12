@@ -40,13 +40,25 @@ export class ListPatientsController {
 
     const perPage = 20
 
-    const patients = await this.prisma.patient.findMany({
-      take: perPage,
-      skip: (page - 1) * perPage,
-      orderBy: {
-        name: 'asc',
+    const [totalCount, patients] = await this.prisma.$transaction([
+      this.prisma.patient.count(),
+      this.prisma.patient.findMany({
+        take: perPage,
+        skip: (page - 1) * perPage,
+        orderBy: {
+          name: 'asc',
+        },
+      }),
+    ])
+
+    const result = {
+      patients,
+      meta: {
+        page,
+        perPage,
+        totalCount,
       },
-    })
-    return { patients }
+    }
+    return result
   }
 }

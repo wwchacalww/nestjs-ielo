@@ -18,18 +18,21 @@
 
   ### Perfil
   - [X] Controller de captura do perfil
-  - [ ] Trocar senha do usuário
+  - [X] Trocar senha do usuário
   - [ ] Alterar status do usuário
 
   ### Profissionais
   - [X] Controller de registro de usuário e profissionais
   - [X] Controller listagem de profissionais com paginação
   - [X] Configurar os testes
+  - [X] Paginação
 
   ### Pacientes
   - [X] Controller de registro de pacientes
   - [X] Controller listagem de pacientes com paginação
   - [X] Configurar os testes
+  - [X] Paginação
+  - [ ] Consultar paciente por id
 
   ### Agendamentos
   - [X] Controller de agendamento de pacientes

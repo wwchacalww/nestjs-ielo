@@ -16,6 +16,7 @@ import { ChangeStatusAppointmentController } from './controllers/appointments/ch
 import { DeleteAppointmentController } from './controllers/appointments/delete-appointment.controller'
 import { TesteController } from './controllers/sessions/teste.controller'
 import { GetProfileController } from './controllers/sessions/get-profile.controller'
+import { ChangeMyPasswordController } from './controllers/sessions/change-my-password.controller'
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { GetProfileController } from './controllers/sessions/get-profile.control
   ],
   controllers: [
     CreateAccountController,
+    ChangeMyPasswordController,
     GetProfileController,
     AuthenticateController,
     CreateProfessionalController,

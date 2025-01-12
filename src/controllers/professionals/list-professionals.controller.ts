@@ -40,13 +40,26 @@ export class ListProfessionalsController {
 
     const perPage = 20
 
-    const professionals = await this.prisma.professional.findMany({
-      take: perPage,
-      skip: (page - 1) * perPage,
-      orderBy: {
-        name: 'asc',
+    const [totalCount, professionals] = await this.prisma.$transaction([
+      this.prisma.professional.count(),
+      this.prisma.professional.findMany({
+        take: perPage,
+        skip: (page - 1) * perPage,
+        orderBy: {
+          name: 'asc',
+        },
+      }),
+    ])
+
+    const result = {
+      professionals,
+      meta: {
+        page,
+        perPage,
+        totalCount,
       },
-    })
-    return { professionals }
+    }
+
+    return result
   }
 }
