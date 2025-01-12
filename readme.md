@@ -32,7 +32,7 @@
   - [X] Controller listagem de pacientes com paginação
   - [X] Configurar os testes
   - [X] Paginação
-  - [ ] Consultar paciente por id
+  - [X] Consultar paciente por id
 
   ### Agendamentos
   - [X] Controller de agendamento de pacientes
