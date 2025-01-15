@@ -2,7 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service'
 import { Controller, Get, HttpCode, Param, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
-@Controller('/patient/:patientId')
+@Controller('/api/patient/:patientId')
 @UseGuards(AuthGuard('jwt'))
 export class GetPatientController {
   constructor(private prisma: PrismaService) {}

@@ -50,7 +50,7 @@ const createPatientBodySchema = z.object({
 const bodyValidationPipe = new ZodValidationPipe(createPatientBodySchema)
 type CreatePatientBodySchema = z.infer<typeof createPatientBodySchema>
 
-@Controller('/patients')
+@Controller('/api/patients')
 @UseGuards(AuthGuard('jwt'))
 export class CreatePatientController {
   constructor(private prisma: PrismaService) {}

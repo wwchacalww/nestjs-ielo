@@ -29,7 +29,7 @@ const listAppointmentsQuerySchema = z.object({
 const queryValidationPipe = new ZodValidationPipe(listAppointmentsQuerySchema)
 type ListAppointmentsQuerySchema = z.infer<typeof listAppointmentsQuerySchema>
 
-@Controller('/appointments')
+@Controller('/api/appointments')
 @UseGuards(AuthGuard('jwt'))
 export class ListAppointmentsController {
   constructor(private prisma: PrismaService) {}
@@ -275,16 +275,44 @@ export class ListAppointmentsController {
         lte.setUTCHours(23)
         lte.setUTCMinutes(59)
         lte.setUTCSeconds(59)
-        const appointments = await this.prisma.appointment.findMany({
-          where: {
-            start: {
-              gte,
-              lte,
-            },
-          },
-        })
 
-        return appointments
+        const [totalCount, appointments] = await this.prisma.$transaction([
+          this.prisma.appointment.count(),
+          this.prisma.appointment.findMany({
+            where: {
+              start: {
+                gte,
+                lte,
+              },
+            },
+            take: perPage,
+            skip: (page - 1) * perPage,
+            orderBy: {
+              start: 'asc',
+            },
+            include: {
+              professional: {
+                select: {
+                  name: true,
+                },
+              },
+              patient: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          }),
+        ])
+        const result = {
+          appointments,
+          meta: {
+            page,
+            perPage,
+            totalCount,
+          },
+        }
+        return result
       } else if (range === 'profissional' && proId) {
         const appointments = await this.prisma.professional.findUnique({
           where: {

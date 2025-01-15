@@ -18,7 +18,7 @@ const authenticateBodySchema = z.object({
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
-@Controller('/sessions')
+@Controller('/api/sessions')
 export class AuthenticateController {
   constructor(
     private prisma: PrismaService,

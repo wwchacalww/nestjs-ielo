@@ -17,7 +17,7 @@ const idQueryParamSchema = z.string().transform(Number).pipe(z.number().min(1))
 
 const queryValidationPipe = new ZodValidationPipe(idQueryParamSchema)
 type IdQueryParamSchema = z.infer<typeof idQueryParamSchema>
-@Controller('/appointments')
+@Controller('/api/appointments')
 @UseGuards(AuthGuard('jwt'))
 export class DeleteAppointmentController {
   constructor(private prisma: PrismaService) {}

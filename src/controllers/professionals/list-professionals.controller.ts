@@ -20,7 +20,7 @@ const pageQueryParamSchema = z
   .pipe(z.number().min(1))
 const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
-@Controller('/professionals')
+@Controller('/api/professionals')
 @UseGuards(AuthGuard('jwt'))
 export class ListProfessionalsController {
   constructor(private prisma: PrismaService) {}

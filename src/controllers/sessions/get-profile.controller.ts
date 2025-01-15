@@ -4,7 +4,7 @@ import { PrismaService } from '@/prisma/prisma.service'
 import { Controller, Get, HttpCode, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
-@Controller('/profile/me')
+@Controller('/api/profile/me')
 @UseGuards(AuthGuard('jwt'))
 export class GetProfileController {
   constructor(private prisma: PrismaService) {}

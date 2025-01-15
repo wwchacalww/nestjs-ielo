@@ -24,7 +24,7 @@ const alterAppointmentBodySchema = z.object({
 const bodyValidationPipe = new ZodValidationPipe(alterAppointmentBodySchema)
 type AlterAppointmentBodySchema = z.infer<typeof alterAppointmentBodySchema>
 
-@Controller('/appointments/alter')
+@Controller('/api/appointments/alter')
 @UseGuards(AuthGuard('jwt'))
 export class AlterAppointmentController {
   constructor(private prisma: PrismaService) {}

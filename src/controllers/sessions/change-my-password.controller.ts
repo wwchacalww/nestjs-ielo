@@ -22,7 +22,7 @@ const changeMyPasswordBodySchema = z.object({
 const bodyValidationPipe = new ZodValidationPipe(changeMyPasswordBodySchema)
 type ChangeMyPasswordBodySchema = z.infer<typeof changeMyPasswordBodySchema>
 
-@Controller('/change/my/password')
+@Controller('/api/change/my/password')
 @UseGuards(AuthGuard('jwt'))
 export class ChangeMyPasswordController {
   constructor(private prisma: PrismaService) {}

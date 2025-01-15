@@ -34,7 +34,7 @@ type ChangeStatusAppointmentBodySchema = z.infer<
   typeof changeStatusAppointmentBodySchema
 >
 
-@Controller('/appointments/change/status')
+@Controller('/api/appointments/change/status')
 @UseGuards(AuthGuard('jwt'))
 export class ChangeStatusAppointmentController {
   constructor(private prisma: PrismaService) {}

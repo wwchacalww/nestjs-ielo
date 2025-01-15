@@ -47,7 +47,7 @@ const createProfessionalBodySchema = z.object({
 const bodyValidationPipe = new ZodValidationPipe(createProfessionalBodySchema)
 type CreateProfessionalBodySchema = z.infer<typeof createProfessionalBodySchema>
 
-@Controller('/professionals')
+@Controller('/api/professionals')
 @UseGuards(AuthGuard('jwt'))
 export class CreateProfessionalController {
   constructor(private prisma: PrismaService) {}
