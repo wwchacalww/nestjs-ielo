@@ -18,12 +18,13 @@ const changeStatusAppointmentBodySchema = z.object({
   id: z.number().min(1),
   status: z.enum([
     'agendado',
+    'reagendado',
     'em consulta',
-    'finalizado',
     'cancelado',
     'faltou',
-    'aguardando responsável técnico',
     'aguardando evolução',
+    'aguardando responsável técnico',
+    'finalizado',
   ]),
 })
 
