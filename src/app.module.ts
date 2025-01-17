@@ -18,6 +18,7 @@ import { TesteController } from './controllers/sessions/teste.controller'
 import { GetProfileController } from './controllers/sessions/get-profile.controller'
 import { ChangeMyPasswordController } from './controllers/sessions/change-my-password.controller'
 import { GetPatientController } from './controllers/patients/get-patient.controller'
+import { ListAppointmentsProfessionalController } from './controllers/appointments/list-appointments-professional.controller'
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { GetPatientController } from './controllers/patients/get-patient.control
     ListPatientsController,
     AppointmentController,
     ListAppointmentsController,
+    ListAppointmentsProfessionalController,
     AlterAppointmentController,
     ChangeStatusAppointmentController,
     DeleteAppointmentController,
