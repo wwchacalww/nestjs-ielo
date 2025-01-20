@@ -106,6 +106,7 @@ export class AlterAppointmentController {
       data: {
         start,
         end,
+        status: 'reagendado',
       },
     })
   }
