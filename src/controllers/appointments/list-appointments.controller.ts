@@ -180,7 +180,14 @@ export class ListAppointmentsController {
           Date.UTC(today.getFullYear(), mm + 1, 0, 23, 59, 0),
         )
         const [totalCount, appointments] = await this.prisma.$transaction([
-          this.prisma.appointment.count(),
+          this.prisma.appointment.count({
+            where: {
+              start: {
+                lte,
+                gte,
+              },
+            },
+          }),
           this.prisma.appointment.findMany({
             where: {
               start: {
@@ -231,7 +238,14 @@ export class ListAppointmentsController {
         )
 
         const [totalCount, appointments] = await this.prisma.$transaction([
-          this.prisma.appointment.count(),
+          this.prisma.appointment.count({
+            where: {
+              start: {
+                lte: endWeek,
+                gte: startWeek,
+              },
+            },
+          }),
           this.prisma.appointment.findMany({
             where: {
               start: {
@@ -277,7 +291,14 @@ export class ListAppointmentsController {
         lte.setUTCSeconds(59)
 
         const [totalCount, appointments] = await this.prisma.$transaction([
-          this.prisma.appointment.count(),
+          this.prisma.appointment.count({
+            where: {
+              start: {
+                gte,
+                lte,
+              },
+            },
+          }),
           this.prisma.appointment.findMany({
             where: {
               start: {
