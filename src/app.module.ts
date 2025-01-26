@@ -19,6 +19,7 @@ import { GetProfileController } from './controllers/sessions/get-profile.control
 import { ChangeMyPasswordController } from './controllers/sessions/change-my-password.controller'
 import { GetPatientController } from './controllers/patients/get-patient.controller'
 import { ListAppointmentsProfessionalController } from './controllers/appointments/list-appointments-professional.controller'
+import { GetAppointmentById } from './controllers/appointments/get-appointment-by-id.controller'
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ListAppointmentsProfessionalController } from './controllers/appointmen
     GetPatientController,
     ListPatientsController,
     AppointmentController,
+    GetAppointmentById,
     ListAppointmentsController,
     ListAppointmentsProfessionalController,
     AlterAppointmentController,
