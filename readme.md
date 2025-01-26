@@ -44,3 +44,4 @@
   - [X] Atualizar o status do agendamento
   - [X] Apagar o registro de uma agendamento
   - [X] Configurar os testes
+  - [X] Consultar atendimento pelo Id
