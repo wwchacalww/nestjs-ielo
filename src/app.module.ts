@@ -20,6 +20,8 @@ import { ChangeMyPasswordController } from './controllers/sessions/change-my-pas
 import { GetPatientController } from './controllers/patients/get-patient.controller'
 import { ListAppointmentsProfessionalController } from './controllers/appointments/list-appointments-professional.controller'
 import { GetAppointmentById } from './controllers/appointments/get-appointment-by-id.controller'
+import { RegisterProgressController } from './controllers/progress/register-progress.controller'
+import { GetProgressById } from './controllers/progress/get-progress-by-id.controller'
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { GetAppointmentById } from './controllers/appointments/get-appointment-b
     AlterAppointmentController,
     ChangeStatusAppointmentController,
     DeleteAppointmentController,
+    RegisterProgressController,
+    GetProgressById,
     TesteController,
   ],
   providers: [PrismaService],

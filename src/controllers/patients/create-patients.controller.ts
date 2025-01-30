@@ -37,13 +37,14 @@ const createPatientBodySchema = z.object({
       }
       return rest(10) === cpfDigits[9] && rest(11) === cpfDigits[10]
     }, 'Digite um cpf válido.')
-    .optional(),
+    .optional()
+    .nullable(),
   fone: z.string(),
   address: z.string(),
   payment: z.string(),
   responsible: z.string(),
   parent: z.string(),
-  cpfResponsible: z.string().optional(),
+  cpfResponsible: z.string().optional().nullable(),
   status: z.string().optional().default('Ativo'),
 })
 
