@@ -20,7 +20,14 @@ export class GetProfileController {
         Professional: true,
       },
     })
-
-    return { profile }
+    const result = {
+      id: profile?.id,
+      name: profile?.name,
+      email: profile?.email,
+      role: profile?.role,
+      status: profile?.status,
+      Professional: profile?.Professional,
+    }
+    return { profile: result }
   }
 }

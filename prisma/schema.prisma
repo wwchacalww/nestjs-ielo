@@ -77,7 +77,8 @@ model Appointment {
   professional   Professional @relation(fields: [professionalId], references: [id])
   patientId      String       @map("patient_id")
   patient        Patient      @relation(fields: [patientId], references: [id])
-  Progress       Progress[]
+  progressId     String?      @map("progress_id")
+  progress       Progress?    @relation(fields: [progressId], references: [id])
   createdAt      DateTime     @default(now()) @map("created_at")
   updatedAt      DateTime?    @updatedAt @map("updated_at")
 
@@ -85,18 +86,17 @@ model Appointment {
 }
 
 model Progress {
-  id             String       @id @default(uuid())
+  id             String        @id @default(uuid())
   progress       String
   status         String
-  appointmentId  Int          @map("appointment_id")
-  appointment    Appointment  @relation(fields: [appointmentId], references: [id])
-  patientId      String       @map("patient_id")
-  patient        Patient      @relation(fields: [patientId], references: [id])
-  professionalId String       @map("professional_id")
-  profissional   Professional @relation(fields: [professionalId], references: [id])
-  supervisorId   String?      @map("supervisor_id")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime?    @updatedAt @map("updated_at")
+  patientId      String        @map("patient_id")
+  patient        Patient       @relation(fields: [patientId], references: [id])
+  professionalId String        @map("professional_id")
+  profissional   Professional  @relation(fields: [professionalId], references: [id])
+  supervisorId   String?       @map("supervisor_id")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime?     @updatedAt @map("updated_at")
+  Appointment    Appointment[]
 
   @@map("progress")
 }
