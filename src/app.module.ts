@@ -22,6 +22,8 @@ import { ListAppointmentsProfessionalController } from './controllers/appointmen
 import { GetAppointmentById } from './controllers/appointments/get-appointment-by-id.controller'
 import { RegisterProgressController } from './controllers/progress/register-progress.controller'
 import { GetProgressById } from './controllers/progress/get-progress-by-id.controller'
+import { GetProgressPatientAndMonth } from './controllers/progress/get-progress-by-patient-and-month'
+import { GetProgressByAppointmentId } from './controllers/progress/get-progress-by-appointment-id'
 
 @Module({
   imports: [
@@ -49,6 +51,8 @@ import { GetProgressById } from './controllers/progress/get-progress-by-id.contr
     ChangeStatusAppointmentController,
     DeleteAppointmentController,
     RegisterProgressController,
+    GetProgressPatientAndMonth,
+    GetProgressByAppointmentId,
     GetProgressById,
     TesteController,
   ],

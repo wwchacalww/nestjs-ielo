@@ -196,8 +196,6 @@ describe('Get appointment by Id (E2E)', () => {
       .set('Authorization', `Bearer ${profissionalToken}`)
       .send()
 
-    console.log(response.body)
-
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual(
       expect.objectContaining({
