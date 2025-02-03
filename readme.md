@@ -45,3 +45,9 @@
   - [X] Apagar o registro de uma agendamento
   - [X] Configurar os testes
   - [X] Consultar atendimento pelo Id
+
+ ### Evoluções
+  - [X] Controller de registro dos atendimentos do mês
+  - [X] Controller de consulta do registro pelo id
+  - [X] Controller de consulta do registro pelo paciente e o mês
+  - [X] Controller de alteração do status

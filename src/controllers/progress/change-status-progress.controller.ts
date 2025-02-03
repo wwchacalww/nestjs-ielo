@@ -16,7 +16,7 @@ import { z } from 'zod'
 
 const changeStatusProgressBodySchema = z.object({
   id: z.string().uuid(),
-  status: z.enum(['rascunho', 'aguardando responsável técnico', 'pronto']),
+  status: z.enum(['rascunho', 'aguardando responsável técnico', 'finalizado']),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(changeStatusProgressBodySchema)
@@ -51,6 +51,11 @@ export class ChangeStatusProgressController {
             userId: true,
           },
         },
+        Appointment: {
+          select: {
+            id: true,
+          },
+        },
       },
     })
     if (!progress) {
@@ -69,6 +74,17 @@ export class ChangeStatusProgressController {
       data: {
         status,
       },
+    })
+    progress.Appointment.forEach(async (app) => {
+      const statusApp = status === 'rascunho' ? 'aguardando evolução' : status
+      await this.prisma.appointment.update({
+        where: {
+          id: app.id,
+        },
+        data: {
+          status: statusApp,
+        },
+      })
     })
   }
 }

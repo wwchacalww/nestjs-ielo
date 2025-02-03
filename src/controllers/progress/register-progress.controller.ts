@@ -23,7 +23,7 @@ const progressBodySchema = z.object({
   procedures: z.string().min(3),
   progress: z.string().min(3),
   appointmentDate: z.string(),
-  status: z.enum(['rascunho', 'aguardando responsável técnico', 'pronto']),
+  status: z.enum(['rascunho', 'aguardando responsável técnico', 'finalizado']),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(progressBodySchema)
