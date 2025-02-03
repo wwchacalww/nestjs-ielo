@@ -186,7 +186,6 @@ describe('List appointments Professional (E2E)', () => {
       .get('/api/appointments/list/professional?range=mm&value=1')
       .set('Authorization', `Bearer ${profissionalToken}`)
       .send()
-    console.log(response.body)
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual(

@@ -6,22 +6,36 @@ import {
   Get,
   HttpCode,
   NotFoundException,
-  Param,
+  Query,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
+import { z } from 'zod'
+import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
 import { OutputProgress, progressProps } from './dto'
 
-@Controller('/api/progress/appointment/:appoinmentId')
+const getProgressPatientAndMonthQuerySchema = z.object({
+  patientId: z.string().uuid(),
+  month: z.string().transform(Number),
+})
+const queryValidationPipe = new ZodValidationPipe(
+  getProgressPatientAndMonthQuerySchema,
+)
+
+type GetProgressPatientAndMonthQuerySchema = z.infer<
+  typeof getProgressPatientAndMonthQuerySchema
+>
+
+@Controller('/api/progress/show/patient/month')
 @UseGuards(AuthGuard('jwt'))
-export class GetProgressByAppointmentId {
+export class GetProgressPatientAndMonthController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
   @HttpCode(200)
   async handle(
-    @Param('appoinmentId') appointmentId: number,
+    @Query(queryValidationPipe) query: GetProgressPatientAndMonthQuerySchema,
     @CurrentUser() user: UserPayload,
   ) {
     const can = ['admin', 'profissional']
@@ -30,37 +44,13 @@ export class GetProgressByAppointmentId {
         'Você não tem acesso ao registro de evoluções',
       )
     }
-    const proUser = await this.prisma.professional.findFirst({
-      where: { userId: user.sub },
-    })
 
-    if (!proUser) {
-      throw new UnauthorizedException(
-        'Você não tem autorização para acessar esse relatório de evolução.',
-      )
-    }
+    const { month, patientId } = query
+    const today = new Date()
+    const mm = month === 0 ? today.getMonth() : month - 1
 
-    const appointment = await this.prisma.appointment.findUnique({
-      where: {
-        id: Number(appointmentId),
-      },
-      include: {
-        patient: true,
-        professional: true,
-      },
-    })
-
-    if (!appointment) {
-      throw new NotFoundException('Consulta não encontrada.')
-    }
-
-    const { start, patientId, professionalId, patient, professional } =
-      appointment
-
-    const mm = start.getMonth()
-
-    const gte = new Date(Date.UTC(start.getFullYear(), mm, 1, 5, 0, 0))
-    const lte = new Date(Date.UTC(start.getFullYear(), mm + 1, 0, 23, 59, 0))
+    const gte = new Date(Date.UTC(today.getFullYear(), mm, 1, 5, 0, 0))
+    const lte = new Date(Date.UTC(today.getFullYear(), mm + 1, 0, 23, 59, 0))
 
     const findAppointmentWithProgress = await this.prisma.appointment.findFirst(
       {
@@ -82,38 +72,13 @@ export class GetProgressByAppointmentId {
     )
 
     if (!findAppointmentWithProgress?.progress) {
-      const result: OutputProgress = {
-        id: '',
-        patientId,
-        professionalId,
-        supervisorId: '',
-        status: 'rascunho',
-        createdAt: new Date(),
-        updatedAt: null,
-        patient: {
-          name: patient.name,
-          birthDate: String(patient.birthDate),
-          fone: patient.fone,
-          payment: patient.payment,
-        },
-        professional: {
-          name: professional.name,
-          register: professional.register,
-        },
-        supervisor: {
-          name: professional.name,
-          register: professional.register,
-        },
-        progressData: {
-          majorComplaint: '',
-          procedures: '',
-          progress: [],
-        },
-      }
-      return { progress: result, appointment }
+      throw new NotFoundException('Não existe evoluções no mês informado.')
     }
 
+    const { patient } = findAppointmentWithProgress
+
     const {
+      professionalId,
       supervisorId,
       progress: progressTable,
       id: progressId,
@@ -121,6 +86,16 @@ export class GetProgressByAppointmentId {
       createdAt,
       updatedAt,
     } = findAppointmentWithProgress.progress
+
+    const proUser = await this.prisma.professional.findFirst({
+      where: { userId: user.sub },
+    })
+
+    if (!proUser) {
+      throw new UnauthorizedException(
+        'Você não tem autorização para acessar esse relatório de evolução.',
+      )
+    }
 
     if ([professionalId, supervisorId].includes(proUser.id) === false) {
       throw new UnauthorizedException(
@@ -140,6 +115,7 @@ export class GetProgressByAppointmentId {
     }
 
     const progressData: progressProps = JSON.parse(progressTable)
+
     const result: OutputProgress = {
       id: progressId,
       patientId,
@@ -161,6 +137,6 @@ export class GetProgressByAppointmentId {
       supervisor,
       progressData,
     }
-    return { progress: result, appointment }
+    return result
   }
 }

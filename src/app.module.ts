@@ -21,9 +21,10 @@ import { GetPatientController } from './controllers/patients/get-patient.control
 import { ListAppointmentsProfessionalController } from './controllers/appointments/list-appointments-professional.controller'
 import { GetAppointmentById } from './controllers/appointments/get-appointment-by-id.controller'
 import { RegisterProgressController } from './controllers/progress/register-progress.controller'
-import { GetProgressById } from './controllers/progress/get-progress-by-id.controller'
-import { GetProgressPatientAndMonth } from './controllers/progress/get-progress-by-patient-and-month'
-import { GetProgressByAppointmentId } from './controllers/progress/get-progress-by-appointment-id'
+import { GetProgressByIdController } from './controllers/progress/get-progress-by-id.controller'
+import { GetProgressPatientAndMonthController } from './controllers/progress/get-progress-by-patient-and-month.controller'
+import { GetProgressByAppointmentIdController } from './controllers/progress/get-progress-by-appointment-id.controller'
+import { ChangeStatusProgressController } from './controllers/progress/change-status-progress.controller'
 
 @Module({
   imports: [
@@ -51,9 +52,10 @@ import { GetProgressByAppointmentId } from './controllers/progress/get-progress-
     ChangeStatusAppointmentController,
     DeleteAppointmentController,
     RegisterProgressController,
-    GetProgressPatientAndMonth,
-    GetProgressByAppointmentId,
-    GetProgressById,
+    GetProgressPatientAndMonthController,
+    GetProgressByAppointmentIdController,
+    GetProgressByIdController,
+    ChangeStatusProgressController,
     TesteController,
   ],
   providers: [PrismaService],

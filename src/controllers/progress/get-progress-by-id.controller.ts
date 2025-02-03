@@ -15,7 +15,7 @@ import { OutputProgress, progressProps } from './dto'
 
 @Controller('/api/progress/show/:progressId')
 @UseGuards(AuthGuard('jwt'))
-export class GetProgressById {
+export class GetProgressByIdController {
   constructor(private prisma: PrismaService) {}
 
   @Get()
