@@ -38,7 +38,7 @@ export class ListPatientsController {
       )
     }
 
-    const perPage = 20
+    const perPage = 100
 
     const [totalCount, patients] = await this.prisma.$transaction([
       this.prisma.patient.count(),
