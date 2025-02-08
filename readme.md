@@ -24,7 +24,7 @@
   ### Profissionais
   - [X] Controller de registro de usuário e profissionais
   - [X] Controller listagem de profissionais com paginação
-  - [ ] Controller de edição de dados do profissional
+  - [X] Controller de edição de dados do profissional
   - [X] Configurar os testes
   - [X] Paginação
 
@@ -32,7 +32,7 @@
   - [X] Controller de registro de pacientes
   - [X] Controller listagem de pacientes com paginação
   - [X] Controller listagem sem paginação
-  - [ ] Controller de edição de dados do paciente
+  - [X] Controller de edição de dados do paciente
   - [X] Configurar os testes
   - [X] Paginação
   - [X] Consultar paciente por id

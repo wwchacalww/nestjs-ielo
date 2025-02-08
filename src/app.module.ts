@@ -27,6 +27,8 @@ import { GetProgressByAppointmentIdController } from './controllers/progress/get
 import { ChangeStatusProgressController } from './controllers/progress/change-status-progress.controller'
 import { GetAllPatientsController } from './controllers/patients/get-all-patients.controller'
 import { UpdatePatientController } from './controllers/patients/update-patient.controller'
+import { UpdateProfessionalController } from './controllers/professionals/update-professional.controller'
+import { GetProfessionalController } from './controllers/professionals/get-professional.controller'
 
 @Module({
   imports: [
@@ -39,10 +41,12 @@ import { UpdatePatientController } from './controllers/patients/update-patient.c
   controllers: [
     CreateAccountController,
     ChangeMyPasswordController,
-    GetProfileController,
     AuthenticateController,
     CreateProfessionalController,
+    GetProfileController,
+    GetProfessionalController,
     ListProfessionalsController,
+    UpdateProfessionalController,
     CreatePatientController,
     GetPatientController,
     GetAllPatientsController,
