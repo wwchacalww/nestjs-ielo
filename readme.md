@@ -54,3 +54,20 @@
   - [X] Controller de consulta do registro pelo id
   - [X] Controller de consulta do registro pelo paciente e o mês
   - [X] Controller de alteração do status
+  - [X] Controller de geração de pdf da evolução pelo id
+
+ ### Instruções
+ - Crie e edite o arquivo .env com as variáveis de ambiente
+
+ ```bash 
+ # Clonar o repositório
+ git clone www.github.com/wwchacalww/nestjs-ielo.git
+ # Entrar na pasta do projeto
+ cd nestjs-ielo
+ # Instalar as dependências
+ npm install
+ # Executar o docker-compose
+ docker-compose up -d
+ # Executar o projeto
+ npm run start:dev
+ ```
