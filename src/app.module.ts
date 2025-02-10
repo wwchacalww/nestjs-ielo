@@ -29,6 +29,8 @@ import { GetAllPatientsController } from './controllers/patients/get-all-patient
 import { UpdatePatientController } from './controllers/patients/update-patient.controller'
 import { UpdateProfessionalController } from './controllers/professionals/update-professional.controller'
 import { GetProfessionalController } from './controllers/professionals/get-professional.controller'
+import { ProgressInPDFController } from './controllers/progress/progress-in-pdf.controller'
+import { ProgressPDF } from './pdf/progress-pdf'
 
 @Module({
   imports: [
@@ -64,8 +66,9 @@ import { GetProfessionalController } from './controllers/professionals/get-profe
     GetProgressByAppointmentIdController,
     GetProgressByIdController,
     ChangeStatusProgressController,
+    ProgressInPDFController,
     TesteController,
   ],
-  providers: [PrismaService],
+  providers: [PrismaService, ProgressPDF],
 })
 export class AppModule {}
