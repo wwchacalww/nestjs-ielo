@@ -46,7 +46,7 @@ export class ChangeStatusAppointmentController {
     @Body(bodyValidationPipe) body: ChangeStatusAppointmentBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const can = ['admin', 'atendente', 'profissional']
+    const can = ['admin', 'atendente', 'profissional', 'supervisora']
     if (!can.includes(user.role)) {
       throw new UnauthorizedException(
         'Você não permissão para alterar o horário!',

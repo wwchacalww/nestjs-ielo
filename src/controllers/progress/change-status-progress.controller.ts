@@ -35,7 +35,7 @@ export class ChangeStatusProgressController {
     @Body(bodyValidationPipe) body: ChangeStatusProgressBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const can = ['admin', 'profissional']
+    const can = ['admin', 'profissional', 'supervisora']
     if (!can.includes(user.role)) {
       throw new UnauthorizedException(
         'Você não permissão para alterar o horário!',

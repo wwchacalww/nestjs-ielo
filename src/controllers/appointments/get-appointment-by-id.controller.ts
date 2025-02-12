@@ -34,7 +34,7 @@ export class GetAppointmentById {
     if (!appointment) {
       throw new Error('Consulta não encontrada!')
     }
-    if (['admin', 'atendente'].includes(user.role)) {
+    if (['admin', 'atendente', 'supervisora'].includes(user.role)) {
       return { appointment }
     }
     if (user.role === 'profissional') {

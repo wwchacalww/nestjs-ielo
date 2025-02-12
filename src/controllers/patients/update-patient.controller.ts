@@ -63,7 +63,7 @@ export class UpdatePatientController {
     @CurrentUser() user: UserPayload,
   ) {
     // Permission role
-    const can = ['admin', 'atendente']
+    const can = ['admin', 'atendente', 'supervisora']
     if (!can.includes(user.role)) {
       throw new UnauthorizedException(
         'Você não permissão para alterar os dados de um paciente!',

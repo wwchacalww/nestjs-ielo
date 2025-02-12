@@ -38,7 +38,7 @@ export class GetProgressPatientAndMonthController {
     @Query(queryValidationPipe) query: GetProgressPatientAndMonthQuerySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const can = ['admin', 'profissional']
+    const can = ['admin', 'profissional', 'supervisora']
     if (!can.includes(user.role)) {
       throw new UnauthorizedException(
         'Você não tem acesso ao registro de evoluções',

@@ -24,7 +24,7 @@ export class GetProgressByAppointmentIdController {
     @Param('appoinmentId') appointmentId: number,
     @CurrentUser() user: UserPayload,
   ) {
-    const can = ['admin', 'profissional']
+    const can = ['admin', 'profissional', 'supervisora']
     if (!can.includes(user.role)) {
       throw new UnauthorizedException(
         'Você não tem acesso ao registro de evoluções',

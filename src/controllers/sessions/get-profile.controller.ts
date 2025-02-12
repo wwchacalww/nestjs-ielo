@@ -20,6 +20,7 @@ export class GetProfileController {
         Professional: true,
       },
     })
+
     const result = {
       id: profile?.id,
       name: profile?.name,

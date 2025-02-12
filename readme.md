@@ -56,6 +56,13 @@
   - [X] Controller de alteração do status
   - [X] Controller de geração de pdf da evolução pelo id
 
+### Ajustes
+ - [X] Adicionar o role de supervisora
+ - [X] Ajustar os controllers de agendamentos
+ - [X] Ajustar os controllers de pacientes
+ - [X] Ajustar os controllers de profissionais
+ - [X] Ajustar os controllers de evoluções
+
  ### Instruções
  - Crie e edite o arquivo .env com as variáveis de ambiente
 

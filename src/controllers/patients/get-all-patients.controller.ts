@@ -17,7 +17,7 @@ export class GetAllPatientsController {
   @Get()
   async handle(@CurrentUser() user: UserPayload) {
     // Permission role
-    const can = ['admin', 'atendente', 'profissional']
+    const can = ['admin', 'atendente', 'profissional', 'supervisora']
     if (!can.includes(user.role)) {
       throw new UnauthorizedException(
         'Você não permissão para acessar a lista de proficionais!',

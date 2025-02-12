@@ -39,7 +39,7 @@ export class ListAppointmentsController {
     @Query(queryValidationPipe) query: ListAppointmentsQuerySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const can = ['admin', 'atendente', 'profissional']
+    const can = ['admin', 'atendente', 'profissional', 'supervisora']
     if (!can.includes(user.role)) {
       throw new UnauthorizedException(
         'Você não tem acesso a agenda de horários!',
@@ -172,7 +172,7 @@ export class ListAppointmentsController {
       return appointments
     }
 
-    if (user.role === 'atendente' || user.role === 'admin') {
+    if (['admin', 'atendente', 'supervisora'].includes(user.role)) {
       if (range === 'mm') {
         const mm = value === 0 ? today.getMonth() : value - 1
         const gte = new Date(Date.UTC(today.getFullYear(), mm, 1, 5, 0, 0))

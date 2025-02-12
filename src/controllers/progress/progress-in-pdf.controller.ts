@@ -46,17 +46,14 @@ export class ProgressInPDFController {
       updatedAt,
     } = progress
 
-    const proUser = await this.prisma.professional.findFirst({
-      where: { userId: user.sub },
+    const proUser = await this.prisma.user.findUnique({
+      where: { id: user.sub },
+      include: {
+        Professional: true,
+      },
     })
 
     if (!proUser) {
-      throw new UnauthorizedException(
-        'Você não tem autorização para acessar esse relatório de evolução.',
-      )
-    }
-
-    if ([professionalId, supervisorId].includes(proUser.id) === false) {
       throw new UnauthorizedException(
         'Você não tem autorização para acessar esse relatório de evolução.',
       )
@@ -74,6 +71,17 @@ export class ProgressInPDFController {
     if (!patient) {
       throw new NotFoundException('Paciente não encontrado.')
     }
+
+    const professional = await this.prisma.professional.findUnique({
+      where: { id: professionalId },
+      select: {
+        name: true,
+        register: true,
+      },
+    })
+    if (!professional) {
+      throw new NotFoundException('Profissional não encontrado.')
+    }
     const supervisor = await this.prisma.professional.findFirst({
       where: { id: supervisorId ?? '' },
       select: {
@@ -83,6 +91,15 @@ export class ProgressInPDFController {
     })
     if (!supervisor) {
       throw new NotFoundException('Supervisor não encontrado.')
+    }
+
+    if (
+      [professionalId, supervisorId].includes(proUser.Professional[0].id) ===
+      false
+    ) {
+      throw new UnauthorizedException(
+        'Você não tem autorização para acessar esse relatório de evolução.',
+      )
     }
 
     const progressData: progressProps = JSON.parse(progressTable)
@@ -101,8 +118,8 @@ export class ProgressInPDFController {
         payment: patient.payment,
       },
       professional: {
-        name: proUser.name,
-        register: proUser.register,
+        name: professional.name,
+        register: professional.register,
       },
       supervisor,
       progressData,
