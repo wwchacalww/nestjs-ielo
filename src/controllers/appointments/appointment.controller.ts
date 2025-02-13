@@ -58,11 +58,12 @@ export class AppointmentController {
       value,
     } = body
     const startTS = new Date(start)
+    startTS.setSeconds(1)
+    console.log(startTS)
     const endTS = new Date(end)
     if (startTS.getTime() >= endTS.getTime()) {
       throw new ConflictException('Horário de agendamento inválido!')
     }
-
     const appointmentPatientInSameTime =
       await this.prisma.appointment.findFirst({
         where: {
@@ -96,7 +97,7 @@ export class AppointmentController {
 
     await this.prisma.appointment.create({
       data: {
-        start,
+        start: startTS,
         end,
         local,
         payment,

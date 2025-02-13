@@ -13,11 +13,12 @@ import {
 import { AuthGuard } from '@nestjs/passport'
 import { z } from 'zod'
 import { progressProps } from './dto'
+import { ConfigService } from '@nestjs/config'
+import { Env } from 'env'
 
 const progressBodySchema = z.object({
   patientId: z.string().uuid(),
   professionalId: z.string().uuid(),
-  supervisorId: z.string().uuid(),
   appointmentId: z.number(),
   majorComplaint: z.string().min(3),
   procedures: z.string().min(3),
@@ -40,9 +41,10 @@ export class RegisterProgressController {
     @Body(bodyValidationPipe) body: ProgressBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
+    const env = new ConfigService<Env, true>()
+    const supervisorId = env.get('SUPERVISOR_ID', { infer: true })
     const {
       professionalId,
-      supervisorId,
       patientId,
       appointmentId,
       majorComplaint,

@@ -120,15 +120,22 @@ export class ProgressPDF {
       yTxt += 30
       pdf.y = yTxt
       pdf.fontSize(12)
-      pdf.font('Helvetica')
+      pdf.font('Helvetica-Bold')
       txt = '1 - Queixa principal e CID:'
       pdf.text(txt, { align: 'left', width: 550, lineGap: 10 })
+      pdf.font('Helvetica')
       txt = '  ' + progress.progressData.majorComplaint
-      pdf.text(txt, { align: 'left', width: 540, lineBreak: true, lineGap: 20 })
+      pdf.text(txt, { align: 'left', width: 540, lineBreak: true, lineGap: 7 })
+      pdf.y += 3
+
+      pdf.font('Helvetica-Bold')
       txt = '2 - Procedimento Técnico e Científico:'
-      pdf.text(txt, { align: 'left', width: 550, lineGap: 10 })
+      pdf.text(txt, { align: 'left', width: 550, lineGap: 7 })
+      pdf.font('Helvetica')
       txt = '  ' + progress.progressData.procedures
-      pdf.text(txt, { align: 'left', width: 540, lineBreak: true, lineGap: 20 })
+      pdf.text(txt, { align: 'left', width: 540, lineBreak: true, lineGap: 7 })
+      pdf.y += 3
+      pdf.font('Helvetica-Bold')
       txt = '3 - Evoluções:'
       pdf.text(txt, { align: 'left', width: 550, lineGap: 10 })
       progress.progressData.progress.forEach((progress) => {
@@ -146,7 +153,7 @@ export class ProgressPDF {
           { locale: 'pt-BR' },
         )
         pdf.text(appointmentDate, {
-          align: 'right',
+          align: 'center',
           width: 540,
           lineBreak: true,
           lineGap: 5,

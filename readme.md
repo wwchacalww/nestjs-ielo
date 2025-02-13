@@ -62,6 +62,7 @@
  - [X] Ajustar os controllers de pacientes
  - [X] Ajustar os controllers de profissionais
  - [X] Ajustar os controllers de evoluções
+ - [X] Criar variavel de ambiente para o cargo de supervisora
 
  ### Instruções
  - Crie e edite o arquivo .env com as variáveis de ambiente
