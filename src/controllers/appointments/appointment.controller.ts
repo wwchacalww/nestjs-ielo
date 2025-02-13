@@ -59,7 +59,6 @@ export class AppointmentController {
     } = body
     const startTS = new Date(start)
     startTS.setSeconds(1)
-    console.log(startTS)
     const endTS = new Date(end)
     if (startTS.getTime() >= endTS.getTime()) {
       throw new ConflictException('Horário de agendamento inválido!')
