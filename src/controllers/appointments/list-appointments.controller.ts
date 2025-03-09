@@ -46,7 +46,7 @@ export class ListAppointmentsController {
       )
     }
     const { range, patId, proId, value, page } = query
-    const perPage = 20
+    const perPage = 200
     const today = new Date()
     today.setUTCHours(3)
     today.setUTCMinutes(0)
