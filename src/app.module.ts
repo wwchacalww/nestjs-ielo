@@ -31,6 +31,7 @@ import { UpdateProfessionalController } from './controllers/professionals/update
 import { GetProfessionalController } from './controllers/professionals/get-professional.controller'
 import { ProgressInPDFController } from './controllers/progress/progress-in-pdf.controller'
 import { ProgressPDF } from './pdf/progress-pdf'
+import { GetMonthlyAppointmentsCount } from './controllers/appointments/getMonthlyAppointmentsCount.controller'
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { ProgressPDF } from './pdf/progress-pdf'
     UpdatePatientController,
     AppointmentController,
     GetAppointmentById,
+    GetMonthlyAppointmentsCount,
     ListAppointmentsController,
     ListAppointmentsProfessionalController,
     AlterAppointmentController,

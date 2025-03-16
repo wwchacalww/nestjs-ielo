@@ -43,6 +43,7 @@
   - [X] Controller listagem de agendamentos do dia
   - [X] Controller listagem de agendamentos da Semana
   - [X] Controller listagem de todos agendamentos do Profissional
+  - [X] Controller calcula a diferença de atendimento de um mês para o outro
   - [X] Trocar a data do agendamento 
   - [X] Atualizar o status do agendamento
   - [X] Apagar o registro de uma agendamento
